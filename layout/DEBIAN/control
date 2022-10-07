@@ -1,0 +1,9 @@
+Package: dev.extbh.benefitpay++
+Name: BenefitPay++
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Just more Copying for BenefitPay app
+Maintainer: ExTBH
+Author: ExTBH
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000)
