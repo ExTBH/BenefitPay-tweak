@@ -11,8 +11,8 @@
 - (void)setupCellWithTitle:(id)title andDescription:(id)desc{
 	%orig;
 	UIContextMenuInteraction *interaction = [[UIContextMenuInteraction alloc] initWithDelegate:self];
-	self.lblDescription.userInteractionEnabled = YES;
-	[self.lblDescription addInteraction:interaction];
+	self.userInteractionEnabled = YES;
+	[self addInteraction:interaction];
 }
 
 // MARK: - Start of Copying
