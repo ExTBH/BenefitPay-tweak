@@ -32,8 +32,6 @@
 }
 %end
 
-
-
 // MARK: - Inbox Related
 @interface BPInboxDetailViewController : UIViewController <UIContextMenuInteractionDelegate>
 @property (nonatomic, weak, readwrite) UILabel *lblMessage;
@@ -61,5 +59,16 @@
 	UIContextMenuConfiguration *conf = [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil
 										actionProvider:^(NSArray *suggestedActions) { return menu;}];
 	return conf;
+}
+%end
+
+
+// MARK - Disable app lock when starting back from background
+@interface AppDelegate : NSObject
+- (void)applicationWillEnterForeground:(id)sharedApplication;
+@end
+
+%hook AppDelegate
+- (void)applicationWillEnterForeground:(id)sharedApplication{
 }
 %end
