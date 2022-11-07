@@ -1,5 +1,14 @@
 #import <UIKit/UIKit.h>
+#import <Cephei/HBPreferences.h>
 
+
+HBPreferences *tweakPrefs;
+
+%hook HBForceCepheiPrefs
++ (BOOL)forceCepheiPrefsWhichIReallyNeedToAccessAndIKnowWhatImDoingISwear {
+    return YES;
+}
+%end
 
 // MARK: - Transaction History Related
 @interface BPTransactionHistoryDetailCell : UIView <UIContextMenuInteractionDelegate>
@@ -10,9 +19,13 @@
 %hook BPTransactionHistoryDetailCell
 - (void)setupCellWithTitle:(id)title andDescription:(id)desc{
 	%orig;
-	UIContextMenuInteraction *interaction = [[UIContextMenuInteraction alloc] initWithDelegate:self];
-	self.userInteractionEnabled = YES;
-	[self addInteraction:interaction];
+	BOOL isCopy;
+	[tweakPrefs registerBool:&isCopy default:YES forKey:@"Copying"];
+	if (isCopy){
+		UIContextMenuInteraction *interaction = [[UIContextMenuInteraction alloc] initWithDelegate:self];
+		self.userInteractionEnabled = YES;
+		[self addInteraction:interaction];
+	}
 }
 
 // MARK: - Start of Copying
@@ -40,9 +53,13 @@
 %hook BPInboxDetailViewController
 - (void)viewDidLoad{
 	%orig;
-	UIContextMenuInteraction *interaction = [[UIContextMenuInteraction alloc] initWithDelegate:self];
-	self.lblMessage.userInteractionEnabled = YES;
-	[self.lblMessage addInteraction:interaction];
+	BOOL isCopy;
+	[tweakPrefs registerBool:&isCopy default:YES forKey:@"Copying"];
+	if (isCopy){
+		UIContextMenuInteraction *interaction = [[UIContextMenuInteraction alloc] initWithDelegate:self];
+		self.lblMessage.userInteractionEnabled = YES;
+		[self.lblMessage addInteraction:interaction];
+	}
 }
 
 // MARK: - Start of Copying
@@ -70,5 +87,15 @@
 
 %hook AppDelegate
 - (void)applicationWillEnterForeground:(id)sharedApplication{
+	BOOL isPreventLock;
+	[tweakPrefs registerBool:&isPreventLock default:YES forKey:@"Lock"];
+	if (!isPreventLock){
+		%orig;
+	}
 }
 %end
+
+
+%ctor {
+	tweakPrefs = [[HBPreferences alloc] initWithIdentifier:@"dev.extbh.benefitpay++.prefs"];
+}
