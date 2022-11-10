@@ -1,6 +1,3 @@
-#import <Preferences/PSListController.h>
-
-@interface BPPRootListController : PSListController
-- (void)openGithub;
-- (void)openTwitter;
+#import <CepheiPrefs/CepheiPrefs.h>
+@interface BPPRootListController : HBRootListController
 @end

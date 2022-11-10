@@ -1,6 +1,6 @@
-Package: dev.extbh.benefitpay++
+Package: dev.extbh.tbb.benefitpay++
 Name: BenefitPay++
-Version: 0.0.3
+Version: 0.0.3-1
 Architecture: iphoneos-arm
 Description: BenefitPay but it's ++
 Maintainer: ExTBH <natheer@extbh.dev>
