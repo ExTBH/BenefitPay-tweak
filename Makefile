@@ -6,9 +6,9 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = BenefitPay
 
-BenefitPay_FILES = Tweak.x
+BenefitPay_FILES = Tweak.m
 BenefitPay_CFLAGS = -fobjc-arc
-BenefitPay_EXTRA_FRAMEWORKS += Cephei CepheiPrefs
+BenefitPay_EXTRA_FRAMEWORKS += Cephei
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 SUBPROJECTS += prefs
