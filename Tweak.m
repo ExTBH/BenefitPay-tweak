@@ -1,19 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <Cephei/HBPreferences.h>
 #import <substrate.h>
-
-@interface AppDelegate : NSObject
-- (void)applicationWillEnterForeground:(UIApplication*)sharedApplication;
-@end
-
-@interface BPTransactionHistoryDetailCell : UIView <UIContextMenuInteractionDelegate>
-@property (nonatomic, weak, readwrite) UILabel *lblDescription;
-- (void)setupCellWithTitle:(NSString*)title andDescription:(NSString*)desc;
-@end
-
-@interface BPInboxDetailViewController : UIViewController <UIContextMenuInteractionDelegate>
-@property (nonatomic, weak, readwrite) UILabel *lblMessage;
-@end
+#import "headers.h"
 
 static const HBPreferences *tweakPreferences; 
 
@@ -125,6 +113,29 @@ static void override_BPInboxDetailViewController_viewDidLoad(BPInboxDetailViewCo
 	}
 }
 
+static UIContextMenuConfiguration *new_TransactionFawriAndFawriPlusSentListingViewModel_ContextMenu(
+    TransactionFawriAndFawriPlusSentListingViewModel *self,
+    SEL _cmd,
+    UITableView *tableView,
+    NSIndexPath *indexPath,
+    CGPoint point)
+{
+    BOOL isCopy;
+	[tweakPreferences registerBool:&isCopy default:YES forKey:@"Copying"];
+    if (!isCopy) {return nil;}
+
+	UIAction *copy = [UIAction actionWithTitle:@"Copy"
+						image:nil identifier:nil handler:^(UIAction *handler) {
+                            TransactionDetailViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                            UIPasteboard.generalPasteboard.string = cell.valueLabel.text;
+						}];
+
+	UIMenu *menu = [UIMenu menuWithTitle:@"" children:@[copy]];
+
+	UIContextMenuConfiguration *configuration = [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil
+										actionProvider:^(NSArray *suggestedActions) { return menu;}];
+	return configuration;
+}
 
 
 
@@ -152,6 +163,18 @@ __attribute__((constructor)) static void init(){
         (IMP) &override_BPInboxDetailViewController_viewDidLoad, 
         (IMP*) &orig_BPInboxDetailViewController_viewDidLoad);
 
+    // beta hooks
+    Class TransactionsDelegate = NSClassFromString(@"BenefitPay.TransactionFawriAndFawriPlusSentListingViewModel");
+    class_addMethod(TransactionsDelegate, 
+                @selector(tableView:contextMenuConfigurationForRowAtIndexPath:point:), 
+                (IMP) &new_TransactionFawriAndFawriPlusSentListingViewModel_ContextMenu,
+                "@@:@@{name=CGPoint}");
+
+    MSHookMessageEx(
+        NSClassFromString(@"BenefitPay.AppDelegate"), 
+        @selector(applicationWillEnterForeground:), 
+        (IMP) &override_AppDelegate_applicationWillEnterForeground, 
+        (IMP*) &orig_AppDelegate_applicationWillEnterForeground);
 
     tweakPreferences = [[HBPreferences alloc] 
         initWithIdentifier:@"dev.extbh.benefitpay++.prefs"];
