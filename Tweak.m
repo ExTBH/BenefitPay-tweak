@@ -113,6 +113,7 @@ static void override_BPInboxDetailViewController_viewDidLoad(BPInboxDetailViewCo
 	}
 }
 
+// FLEX Will show a return type of '?' because of swift
 static UIContextMenuConfiguration *new_TransactionFawriAndFawriPlusSentListingViewModel_ContextMenu(
     TransactionFawriAndFawriPlusSentListingViewModel *self,
     SEL _cmd,
@@ -136,8 +137,6 @@ static UIContextMenuConfiguration *new_TransactionFawriAndFawriPlusSentListingVi
 										actionProvider:^(NSArray *suggestedActions) { return menu;}];
 	return configuration;
 }
-
-
 
 
 __attribute__((constructor)) static void init(){
