@@ -3,7 +3,7 @@ INSTALL_TARGET_PROCESSES = Preferences
 
 include $(THEOS)/makefiles/common.mk
 
-BUNDLE_NAME = Prefs
+BUNDLE_NAME = BPayPrefs
 
 Prefs_FILES = BPPRootListController.m
 Prefs_FRAMEWORKS = UIKit Foundation
