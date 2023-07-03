@@ -6,7 +6,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = BenefitPay
 
-BenefitPay_FILES = Tweak.m
+BenefitPay_FILES = Tweak.m Jailbreak.m
 BenefitPay_CFLAGS = -fobjc-arc
 BenefitPay_EXTRA_FRAMEWORKS += Cephei
 
